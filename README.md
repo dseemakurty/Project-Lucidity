@@ -4,4 +4,4 @@ At its core, Project Lucidity is a sleep mask that helps you attain the elusive 
 
 For more information about the project, check out the main website at: www.projectlucidity.com
 
-All the code, schematics, and eagle files have been uploaded into this github. Feel free to utilize this information for your personal designs but please check the Liscence file for any concerns about the contents use.
+All the code, schematics, and eagle files have been uploaded into this github. Feel free to utilize this information for your personal designs but please check the license file for any concerns about the contents use.
