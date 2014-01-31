@@ -1,0 +1,82 @@
+************************************************************************
+
+Integrating the Sleep Mask into your current application could not be easier. The cell phone
+and the transmitting module are interfaced by a simple headphone jack. This allows for audio
+to convey the data from the smartphone to the transmitting module. 
+
+Proper Message Encoding:
+	The transmitter module will accept any integer (up to 16 bits) which it then transmits to
+	the mask. This integer describes which pattern will be displayed, the speed setting, and
+	the brightness setting of each pattern.
+	
+	These settings are analyzed from the integer by reading the value of each digit of the int.
+	The ones digit contains the brightness level (9 being brightest), the tens digit contains
+	the pattern speed level (9 being the fastest), and any digits above the tens digit denote
+	the pattern itself.
+	
+	For example: int 374
+	4 = brightness factor
+	7 = speed factor
+	3 = pattern
+	
+	For example: int 1359
+	9 = brightness factor
+	5 = speed factor
+	13 = pattern
+	
+	The default setting for every pattern should be a speed and brightness setting of 5.
+	One exception to this rule is for pattern #1, which is the daylight simulation, the
+	speed setting should be set to 0 and brightness to 9.
+	
+	The patterns are:
+	#1: Daylight Simulation
+	#2: Flash All LEDs (blinks both eye's leds at same time)
+	#3: Sweep Pattern (sweeps the leds from left side to the right side and back)
+	#4: Alternating Flash (flashes left eye, then right eye)
+	#5: Double Flash (flash all leds twice quickly, then pause for a longer time)
+	...More to come....
+	
+Creating the Message:
+	The transmitter understands the audio signal only if it is encoded in a proper way.
+	The integer is encoded into the audio signal by converting the integer into binary 
+	(and ensuring it is not longer than 16 bits) and then for each bit, appending one of 
+	three audio clips together. There are four wav audio files which should be included
+	with the application; bit1.wav, bit0.wav, bitNull.wav, startBit.wav
+	
+	For each bit of the integer, based on whether the bit is a 1 or 0, append the proper
+	wav bit to the startBit.wav. After appending each bit's audio file of the integer,
+	finally append the bitNull.wav file. This creates a complete audio message that
+	encapsulates the integer and can be interpreted by the transmitter module.
+	
+	The total size of all four wav files is only 2KB so its very easy to implement into
+	the program. Because of of the small size of each part, the message audio file is also
+	very small, lasting on average about 20ms for a 10 bit integer to 30ms for a 16bit integer. 
+	However, because transmitter module will generally be in a polling mode to conserve
+	battery, this short message needs to be repeated continuously for 60 seconds to ensure
+	proper delivery of the message. 
+	
+Pattern Preview Feature:
+	Since the mask can be customized in these multiple ways, the user will want to be able
+	to preview the different settings as he/she changes them. To allow for this, when the
+	mask and transmitter are first powered on, they are put into a quick polling mode for
+	two minutes. During these two minutes, any audio signals sent by the smartphone will 
+	be quickly picked up by the transmitter and relayed to the mask. To properly implement
+	this feature, there should be a preview button in the settings page which transmits 
+	the current settings for a brief 4 seconds. When the mask receives the new settings,
+	it will display the designated pattern for a short time so the user can check out the 
+	settings.
+	
+	
+When Mask should be Triggered:
+	The sleep mask should be triggered on two occasions. 
+		1. The user had entered REM sleep and is in sleep paralysis. During this time, can
+		be identified as abnormally low accelerometer movement for a set time, the mask 
+		should be triggered with the lucid dreaming pattern.
+		2. When its the optimal time to wake up, the mask can be triggered to initiate the
+		daylight simulation feature. This feature by default settings (pattern:1, speed:0,
+		brightness:9) will run at full brightness for 5 minutes. During which time the 
+		white LEDs will be getting increasing brighter to help awaken a user.
+	
+	
+	
+	
